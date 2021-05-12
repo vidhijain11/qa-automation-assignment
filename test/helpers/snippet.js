@@ -77,7 +77,7 @@ class Snippet {
                 allureReporter.addStep(`Select side dish - ${dish.extra.sideDishName}`)
                 menu.selectSideDish(dish.extra.sideDishName)
                 //validate selected side dish name
-                expect(menu.ddoSideDishByValue(menu.ddSelectSideDish.getValue())).toHaveText(dish.extra.sideDishName)
+                expect(menu.getSelectedSideDish()).toEqual(dish.extra.sideDishName)
 
                 allureReporter.addStep(`Add dish quantity - ${dish.extra.quantity}`)
                 menu.addDishQuantity(dish.extra.quantity)

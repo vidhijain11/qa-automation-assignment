@@ -18,4 +18,19 @@ export default class Page {
         allureReporter.addEnvironment("Max Browser Threads", config.maxInstances)
         browser.url(url)
     }
+
+    /**
+     * Get selected drop down option visible text
+     * @param {string} locator - css selector
+     * @example getSelectedDropDownValue('#ipayswith')
+     * @returns 
+     */
+    getSelectedDropDownValue(locator){
+        let selectedOption = browser.execute( (locator)=>{
+            var value = document.querySelector(locator);  
+            return value.options[value.selectedIndex].text;
+        }, locator
+        )
+        return selectedOption;
+    }
 }

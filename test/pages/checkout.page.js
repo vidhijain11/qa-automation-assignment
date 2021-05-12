@@ -4,9 +4,13 @@ import basePage from "./page"
  * This page contains locators and method of checkout page. 
  * Fill delivery address, user details,  select delivery time and pay with option.
  */
+
 class CheckOut extends basePage {
 
     //Start of locators list***
+
+    get ddPayWithLocator() { return '#ipayswith'}
+    get ddDeliveryTimeLocator() { return '#ideliverytime'}
 
     get inputAddress() { return $('#iaddress') }
     get inputPostcode() { return $('#ipostcode') }
@@ -14,8 +18,8 @@ class CheckOut extends basePage {
     get inputName() { return $('#isurname') }
     get inputPhoneNumber() { return $('#iphonenumber') }
     get inputEmail() { return $('#iemail') }
-    get ddDeliveryTime() { return $('#ideliverytime') }
-    get ddPayWith() { return $('#ipayswith') }
+    get ddDeliveryTime() { return $(this.ddDeliveryTimeLocator) }
+    get ddPayWith() { return $(this.ddPayWithLocator) }
     get btnOrderAndPay() { return $('input[value="Order and pay"]') }
     get selectedPaymentMode() { return $('div[class*="paymentbuttonchecked"] .radiobutton_form_label') }
 
@@ -25,10 +29,6 @@ class CheckOut extends basePage {
 
     txtPaysWith(value) {
         return $(`//select[@id="ipayswith"]/option[@value="${value}"]`)
-    }
-
-    txtPaysWithByIndex(priceIndex) {
-        return $(`//select[@id="ipayswith"]/option[${priceIndex}]`)
     }
 
     //End of locators list***
@@ -64,6 +64,22 @@ class CheckOut extends basePage {
      */
     clickOrderAndPay() {
         this.btnOrderAndPay.click()
+    }
+
+    /**
+     * Get selected paysWith drop down option visible text
+     * @returns 
+     */
+    getSelectedPaysWith(){
+        return this.getSelectedDropDownValue(this.ddPayWithLocator)
+    }
+
+    /**
+     * Get selected delivery time drop down option visible text
+     * @returns 
+     */
+    getSelectedDeliveryTime(){
+        return this.getSelectedDropDownValue(this.ddDeliveryTimeLocator)
     }
 
     //End of methods***

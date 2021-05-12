@@ -3,14 +3,17 @@ import basePage from "./page"
 /**
  * This page contains locators and selectors of Restaurant's menu page. 
  */
+
 class MenuPage extends basePage {
 
     //Start of locators list***
 
+    get ddSideDishLocator() { return  '.select-input > select'}
+
     get lblRestaurantName() { return $('//div[@class="restaurant-name"]/h1') }
     get btnDishPrice() { return $('.button_add_value > h3') }
     get linkActiveDishType() { return $('div.menu-category-list a[class*="slide-active"]') }
-    get ddSelectSideDish() { return $('select[id*="isidedishpulldown"]') }
+    get ddSelectSideDish() { return $(this.ddSideDishLocator) }
     get inputSelectedSideDish() { return $('input[id*="isidedishselectvalue"]') }
     get txtDishQuantity() { return $('.basketproductnr') }
     get btnAddSideDish() { return $('.button-add-sidedish') }
@@ -106,6 +109,14 @@ class MenuPage extends basePage {
                 this.btnRemoveSideDish.click()
             }
         }
+    }
+
+    /**
+     * Get selected side dish drop down option visible text
+     * @returns 
+     */
+    getSelectedSideDish(){
+        return this.getSelectedDropDownValue(this.ddSideDishLocator)
     }
     //End of Methods***
 }

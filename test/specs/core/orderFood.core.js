@@ -41,16 +41,14 @@ class OrderFood {
         allureReporter.addStep(`Fill delivery details and user information. Validate default delivery time and paysWith option`)
         basket.clickOrder()
         checkout.fillAddressForm(data.deliveryAddress[1], data.user[1])
-        expect(checkout.ddDeliveryTime).toHaveValue(data.deliveryTime.defaultValue)
-        expect(checkout.txtDeliveryTime(data.deliveryTime.defaultValue)).toHaveText(data.deliveryTime.defaultText)
+        expect(checkout.getSelectedDeliveryTime()).toEqual(data.deliveryTime.defaultText)
 
-        expect(checkout.ddPayWith).toHaveValue("")
-        expect(checkout.txtPaysWith("")).toHaveText(dataOrderFood.cost.paysWith.defaultText)
+        expect(checkout.getSelectedPaysWith()).toEqual(`Exact amount: ${dataOrderFood.cost.total}`)
 
-        if (dataOrderFood.cost.paysWith.priceIndex != 1) {
+        if (dataOrderFood.cost.paysWith?.priceIndex != undefined) {
             allureReporter.addStep(`Select pays with drop down option ${dataOrderFood.cost.paysWith.priceIndex}`)
             checkout.selectPayWithByIndex(dataOrderFood.cost.paysWith.priceIndex)
-            expect(checkout.txtPaysWithByIndex(dataOrderFood.cost.paysWith.priceIndex)).toHaveText(dataOrderFood.cost.paysWith.optionText)
+            expect(checkout.getSelectedPaysWith()).toEqual(dataOrderFood.cost.paysWith.optionText)
         }
 
 

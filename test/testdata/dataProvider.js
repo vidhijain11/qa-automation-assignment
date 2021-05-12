@@ -82,28 +82,22 @@ export default class DataProvider {
                 delivery: "Free",
                 total: "€ 5,40",
                 paysWith: {
-                    defaultText: "Exact amount: € 5,40",
                     optionText: "€ 5,50",
-                    priceIndex: 2
+                    priceIndex: 1  //closest price
                 }
             },
             2: {
                 subTotal: "€ 2,00",
                 delivery: "Free",
-                total: "€ 2,00",
-                paysWith: {
-                    defaultText: "Exact amount: € 2,00",
-                    priceIndex: 1
-                }
+                total: "€ 2,00"
             },
             3: {
                 subTotal: "€ 9,00",
                 delivery: "Free",
                 total: "€ 9,00",
                 paysWith: {
-                    defaultText: "Exact amount: € 9,00",
                     optionText: "€ 20,00",
-                    priceIndex: 3
+                    priceIndex: 2
                 }
             }
         }
@@ -111,7 +105,6 @@ export default class DataProvider {
 
     get deliveryTime() {
         return {
-            defaultValue: "asap",
             defaultText: "As soon as possible"
         }
     }
