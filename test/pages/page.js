@@ -6,7 +6,7 @@ export default class Page {
     /**
      * Add environment details in allure report.- Environment type, test url, test browser, number of parallel browsers.
      * Launch given URL on browser.
-     * Maximize browser window.
+     * Set window size 1280*800
      * @param {string} url
      * @example open() - launch base url 
      */
@@ -16,21 +16,22 @@ export default class Page {
         allureReporter.addEnvironment("Headless mode", config.isHeadlessMode)
         allureReporter.addEnvironment("Browser Mode", config.browserMode)
         allureReporter.addEnvironment("Max Browser Threads", config.maxInstances)
+        browser.setWindowSize(1280, 800)
         browser.url(url)
     }
 
     /**
      * Get selected drop down option visible text
      * @param {string} locator - css selector
-     * @example getSelectedDropDownValue('#ipayswith')
+     * @example getTextSelectedDropDownOption('#ipayswith')
      * @returns 
      */
-    getSelectedDropDownValue(locator){
+    getTextSelectedDropDownOption(locator){
         let selectedOption = browser.execute( (locator)=>{
-            var value = document.querySelector(locator);  
+            let value = document.querySelector(locator);  
             return value.options[value.selectedIndex].text;
-        }, locator
-        )
+        }, locator)
+        
         return selectedOption;
     }
 }

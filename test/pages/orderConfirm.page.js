@@ -8,6 +8,10 @@ class OrderConfirmation extends basePage {
     //Start of locators list***
 
     get txtOrderRefNum() { return $('span.order-purchaseid') }
+    get txtTrackOrder() {return $('header=Track your order')}
+    get btnAcceptOrder() {return $('button=Accept')}
+    get txtThankYouMsg() {return $('h1=Thank you for your order!')}
+    get imgTrackOrderMap() {return $('[aria-label=Map]')}
 
     /**
      * Locator for ordered dish name

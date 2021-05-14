@@ -66,7 +66,7 @@ class Snippet {
      */
     addDishToBasket(dish) {
 
-        expect(menu.linkDishName(dish.name)).toBeDisplayed()
+        expect(menu.linkDishName(dish.name)).toBeClickable()
         menu.selectDish(dish.name)
 
         if (dish.extra != undefined) {

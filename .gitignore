@@ -104,3 +104,4 @@ dist
 .tern-port
 test/specs/main/test.spec.js
 .vscode/launch.json
+test/specs/main/test.js

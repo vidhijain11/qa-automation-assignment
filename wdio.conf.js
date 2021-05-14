@@ -3,28 +3,28 @@ const fsExtra = require('fs-extra')
 let runTimeCapabilities = null
 
 //Setting environment based on user input
-var ENV = process.env.ENV || "Prod-Test1"
+let ENV = process.env.ENV || "Prod-Test1"
 
 // Setting browser arguments and maximum browser instance based on user input
-var runTimeBrowser = process.env.BROWSER || 'chrome'
-var maxBrowserInstance = parseInt(process.env.THREADS) || 1
+let runTimeBrowser = process.env.BROWSER || 'chrome'
+let maxBrowserInstance = parseInt(process.env.THREADS) || 1
 
 //Setting browser headless mode
-var headless = process.env.HEADLESS || 'false'
+let headless = process.env.HEADLESS || 'false'
 
 //Setting browser arguments based on mode of run
 let chrome_browser_args = {}
 let firefox_browser_args = {}
 if (headless == 'true') {
-    chrome_browser_args = ['--headless', '--disable-extensions', '--allow-running-insecure-content', '--disable-dev-shm-usage', '--window-size=1200,700', '--disable-gpu', '--no-sandbox', '--unlimited-storage', '--disable-notifications', 'disable-infobars']
+    chrome_browser_args = ['--headless', '--disable-extensions', '--allow-running-insecure-content', '--disable-dev-shm-usage', '--disable-gpu', '--no-sandbox', '--unlimited-storage', '--disable-notifications']
     firefox_browser_args = ['-headless']
 } else {
-    chrome_browser_args = ['--disable-dev-shm-usage', '--window-size=1200,700', '--disable-gpu', '--no-sandbox', '--unlimited-storage', '--disable-notifications', 'disable-infobars']
+    chrome_browser_args = [ '--no-sandbox', '--unlimited-storage', 'disable-infobars']
     firefox_browser_args = []
 }
 
 //Setting firefox browser capabilities
-var firefoxCapabilities = {
+let firefoxCapabilities = {
     browserName: 'firefox',
     acceptInsecureCerts: true,
     "moz:firefoxOptions": {
@@ -34,7 +34,7 @@ var firefoxCapabilities = {
 }
 
 //Setting chrome browser capabilities
-var chromeCapabilities = {
+let chromeCapabilities = {
     browserName: 'chrome',
     acceptInsecureCerts: true,
     'goog:chromeOptions': {
@@ -187,11 +187,11 @@ exports.config = {
     mochaOpts: {
         // Babel setup
         require: ['@babel/register'],
-       
+
         //Abort ("bail") after first test failure 
         bail: true,
         ui: 'bdd',
-       
+
         //Specify test timeout threshold
         timeout: 12000000
     },
@@ -264,7 +264,8 @@ exports.config = {
                 timeout: TIMEOUT,
                 timeoutMsg: 'Given element ' + this.selector + ' does NOT EXIST after ' + TIMEOUT + ' MiliSeconds'
             });
-            this.scrollIntoView()
+            this.scrollIntoView({block: "center"})
+            browser.pause(100)
             try {
                 this.waitForClickable({
                     timeout: TIMEOUT,

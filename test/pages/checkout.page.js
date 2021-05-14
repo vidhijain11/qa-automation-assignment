@@ -23,12 +23,13 @@ class CheckOut extends basePage {
     get btnOrderAndPay() { return $('input[value="Order and pay"]') }
     get selectedPaymentMode() { return $('div[class*="paymentbuttonchecked"] .radiobutton_form_label') }
 
-    txtDeliveryTime(value) {
-        return $(`//select[@id="ideliverytime"]/option[@value="${value}"]`)
-    }
-
-    txtPaysWith(value) {
-        return $(`//select[@id="ipayswith"]/option[@value="${value}"]`)
+    /**
+     * Locator for delivery time for a given index.
+     * @param {number} index 
+     * @returns 
+     */
+    txtDeliveryTime(index){
+        return $(`${this.ddDeliveryTimeLocator} option:nth-child(${index})`)
     }
 
     //End of locators list***
@@ -71,7 +72,7 @@ class CheckOut extends basePage {
      * @returns 
      */
     getSelectedPaysWith(){
-        return this.getSelectedDropDownValue(this.ddPayWithLocator)
+        return this.getTextSelectedDropDownOption(this.ddPayWithLocator)
     }
 
     /**
@@ -79,9 +80,84 @@ class CheckOut extends basePage {
      * @returns 
      */
     getSelectedDeliveryTime(){
-        return this.getSelectedDropDownValue(this.ddDeliveryTimeLocator)
+        return this.getTextSelectedDropDownOption(this.ddDeliveryTimeLocator)
     }
 
+    /**
+     * Select delivery time option from drop down by visible text
+     * @param {string} text 
+     * @returns 
+     */
+    selectDeliveryTime(text) {
+        return this.ddDeliveryTime.selectByVisibleText(text)
+    }
+
+     /**
+     * Get first available delivery time.
+     */
+      getClosestDeliveryTime() {
+        let todayDate = new Date().toLocaleString("en-US", { timeZone: "Europe/Amsterdam" })
+
+        let hours = new Date(todayDate).getHours()
+        let minutes = new Date(todayDate).getMinutes()
+        let timeStr = '';
+
+        if (minutes >= 8 && minutes <= 22) {
+            timeStr = this.getDeliveryTimeHours(hours) + ':00';
+        } else if (minutes >= 23 && minutes <= 37) {
+            timeStr = this.getDeliveryTimeHours(hours) + ':15';
+        } else if (minutes >= 38 && minutes <= 52) {
+            timeStr = this.getDeliveryTimeHours(hours) + ':30';
+        } else if (minutes >= 53 && minutes <= 59) {
+            timeStr = this.getDeliveryTimeHours(hours) + ':45';
+        } else if ((minutes <= 7 && minutes >= 0)) {
+            if (hours >= 0 && hours <= 9) {
+                hours = '0' + hours.toString();
+            } else hours.toString()
+            timeStr = hours + ':45';
+        }
+        return timeStr;
+    }
+
+    /**
+     * To get hours of first delivery time option. 
+     * @param {number} hours 
+     * @returns {string} hours 
+     */
+    getDeliveryTimeHours(hours) {
+        if (hours == 23) {
+            return '00'
+        } else if (hours <= 8 && hours >= 0) {
+            return '0' + (hours + 1).toString()
+        } else {
+            return (hours + 1).toString();
+        }
+    }
+
+    /**
+     * Get list of available delivery time options.
+     * @returns {Array} deliveryTime
+     */
+    getListDeliveryTime(){
+        let deliveryTimeArr = new Array();
+        let timeStr = getClosestDeliveryTime();
+        deliveryTimeArr.push(dataSet.deliveryTime.defaultText)
+        deliveryTimeArr.push(timeStr)
+         for(let i=0; i<15; i++){
+             let hours = parseInt(timeStr.split(':')[0])
+             let minutes = parseInt(timeStr.split(':')[1])
+             if(minutes==0 || minutes==15 || minutes==30){
+                 minutes = minutes +15;
+                 time =  timeStr.split(':')[0] + ':' + minutes.toString();
+             } else if (minutes==45){
+                 time = getDeliveryTimeHours(hours) + ':00'
+             }
+             timeStr = time;
+             deliveryTimeArr.push(time)
+         }
+         return deliveryTimeArr;
+     }
+     
     //End of methods***
 }
 

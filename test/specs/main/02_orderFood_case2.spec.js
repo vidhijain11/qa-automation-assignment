@@ -5,14 +5,14 @@ import landing from "../../pages/landing.page"
 import allureReporter from "@wdio/allure-reporter"
 
 
-describe(`Scenario - Search Restaurant and place a order - Case 2`, () => {
+describe(`Scenario - Search Restaurant and place a order`, () => {
 
     before('Launching the Application', () => {
         allureReporter.addStep("Launching the Application")
         landing.open()
     })
 
-    it(`On checkout page test user can pay with - Default Price`, () => {
+    it(`Case:2 -On checkout page test user can pay with - Default Price`, () => {
         allureReporter.addSeverity('normal')
         orderFood.execute(data.scenario_orderFood[1])
     })

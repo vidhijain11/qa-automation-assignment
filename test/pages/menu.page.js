@@ -116,7 +116,7 @@ class MenuPage extends basePage {
      * @returns 
      */
     getSelectedSideDish(){
-        return this.getSelectedDropDownValue(this.ddSideDishLocator)
+        return this.getTextSelectedDropDownOption(this.ddSideDishLocator)
     }
     //End of Methods***
 }
