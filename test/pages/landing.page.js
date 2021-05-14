@@ -13,6 +13,9 @@ class LandingPage extends basePage {
     get btnShow() { return $("#submit_deliveryarea") }
     get txtTitle() { return $("h1[class='header__title']") }
 
+    get imgTopBar() { return $(".topbar-container") }
+    get imgTopHeader() { return $(".header-top") }
+
 
     /**
      * Selects delivery area from the drop down list

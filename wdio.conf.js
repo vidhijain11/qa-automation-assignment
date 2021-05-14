@@ -1,6 +1,11 @@
 const fsExtra = require('fs-extra')
+const { join } = require('path');
+import allureReporter from '@wdio/allure-reporter'
 
 let runTimeCapabilities = null
+
+//Setting visual testing mode.
+let visualTesting = process.env.VISUALTESTING || "true"
 
 //Setting environment based on user input
 let ENV = process.env.ENV || "Prod-Test1"
@@ -17,7 +22,7 @@ let chrome_browser_args = {}
 let firefox_browser_args = {}
 if (headless == 'true') {
     chrome_browser_args = ['--headless', '--disable-extensions', '--allow-running-insecure-content', '--disable-dev-shm-usage', '--disable-gpu', '--no-sandbox', '--unlimited-storage', '--disable-notifications']
-    firefox_browser_args = ['-headless']
+    firefox_browser_args = ['-headless', '-width 1280', '-height 800', '–window-size=1280,800']
 } else {
     chrome_browser_args = [ '--no-sandbox', '--unlimited-storage', 'disable-infobars']
     firefox_browser_args = []
@@ -156,7 +161,22 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['selenium-standalone'],
+    services: ['selenium-standalone',
+
+        ['image-comparison',
+            // The options
+            {
+                // Some options, see the docs for more
+                baselineFolder: join(process.cwd(), './test/baselineScreenShots/'),
+                formatImageName: '{tag}-{1280}x{800}',
+                screenshotPath: join(process.cwd(), '.tmp/'),
+                savePerInstance: true,
+                autoSaveBaseline: true,
+                blockOutStatusBar: true,
+                blockOutToolBar: true,
+            }],
+    ],
+
 
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -213,10 +233,12 @@ exports.config = {
         console.log("Browser mode: ", runTimeBrowser)
         console.log("Max browser instance: ", maxBrowserInstance)
         console.log("Headless: ", headless)
+        console.log("Visual Testing: ", visualTesting)
 
         //Deleting Old Report
         const dir1 = "./allure-report"
         const dir2 = "./allure-results"
+        const dir3 = "./.tmp"
 
         if (fsExtra.existsSync(dir1)) {
             fsExtra.rmdir(dir1, { recursive: true })
@@ -226,6 +248,11 @@ exports.config = {
         if (fsExtra.existsSync(dir2)) {
             fsExtra.rmdir(dir2, { recursive: true })
             console.log(`${dir2} removed`)
+        }
+
+        if (fsExtra.existsSync(dir3)) {
+            fsExtra.rmdir(dir3, { recursive: true })
+            console.log(`${dir3} removed`)
         }
     },
     /**
@@ -275,6 +302,24 @@ exports.config = {
                 return origClickFunction()
             } catch (err) {
                 throw err
+            }
+        }, true)
+
+        //Perform visual Testing if Flag is true
+        browser.addCommand('checkImage', function (name) {
+            if (visualTesting == "true") {
+                let diffValue = browser.checkElement(this, name)
+                if (diffValue <= 0.10) {
+                    allureReporter.addStep(`Visual Test for Image - ${name}`,[],'passed')
+                    return true
+                }
+                else {
+                 allureReporter.addStep(`Visual Test for Image - ${name} Failed`,[],'failed')
+                    return false
+                }
+            } else {
+                console.log("Visual Testing is skipped")
+                return true
             }
         }, true)
     },
