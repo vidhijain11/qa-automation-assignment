@@ -6,5 +6,5 @@ services:
 test:
   script:
     - npm install
-    - $env:HEADLESS='true' 
+    - HEADLESS='true' 
     - npm test
