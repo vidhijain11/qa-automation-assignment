@@ -15,7 +15,7 @@ let runTimeBrowser = process.env.BROWSER || 'chrome'
 let maxBrowserInstance = parseInt(process.env.THREADS) || 1
 
 //Setting browser headless mode
-let headless = process.env.HEADLESS || 'false'
+let headless = process.env.HEADLESS || 'true'
 
 //Setting browser arguments based on mode of run
 let chrome_browser_args = {}
