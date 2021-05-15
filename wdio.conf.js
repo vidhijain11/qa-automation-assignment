@@ -24,7 +24,7 @@ if (headless == 'true') {
     chrome_browser_args = ['--headless', '--disable-extensions', '--allow-running-insecure-content', '--disable-dev-shm-usage', '--disable-gpu', '--no-sandbox', '--unlimited-storage', '--disable-notifications']
     firefox_browser_args = ['-headless', '-width 1280', '-height 800', '–window-size=1280,800']
 } else {
-    chrome_browser_args = [ '--no-sandbox', '--unlimited-storage', 'disable-infobars']
+    chrome_browser_args = ['--no-sandbox', '--unlimited-storage', 'disable-infobars']
     firefox_browser_args = []
 }
 
@@ -102,9 +102,9 @@ exports.config = {
     //Environment
     environment: ENV,
 
-    browserMode : runTimeBrowser,
+    browserMode: runTimeBrowser,
 
-    isHeadlessMode : headless,
+    isHeadlessMode: headless,
     //
     // ============
     // Capabilities
@@ -291,7 +291,7 @@ exports.config = {
                 timeout: TIMEOUT,
                 timeoutMsg: 'Given element ' + this.selector + ' does NOT EXIST after ' + TIMEOUT + ' MiliSeconds'
             });
-            this.scrollIntoView({block: "center"})
+            this.scrollIntoView({ block: "center" })
             browser.pause(100)
             try {
                 this.waitForClickable({
@@ -310,11 +310,19 @@ exports.config = {
             if (visualTesting == "true") {
                 let diffValue = browser.checkElement(this, name)
                 if (diffValue <= 0.10) {
-                    allureReporter.addStep(`Visual Test for Image - ${name}`,[],'passed')
+                    allureReporter.addStep(`Visual Test for Image - ${name}`, [], 'passed')
                     return true
                 }
                 else {
-                 allureReporter.addStep(`Visual Test for Image - ${name} Failed`,[],'failed')
+
+                    //console.log("browser name is ", browser.capabilities.browserName)
+                    fsExtra.readFile(`./.tmp/diff/desktop_${browser.capabilities.browserName}/${name}-{1280}x{800}.png`, (err, data) => {
+                        if (err) throw err; // Fail if the file can't be read.
+                        let str = data.toString('base64')
+                        data = Buffer.from(str, 'base64');
+                        allureReporter.addStep(`Visual Test for Image - ${name} Failed`, [], 'failed')
+                        allureReporter.addAttachment("Difference Screenshot", data);
+                    });
                     return false
                 }
             } else {
