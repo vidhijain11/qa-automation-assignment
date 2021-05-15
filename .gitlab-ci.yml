@@ -1,6 +1,10 @@
 image: node:latest
 
-test_async:
+services:
+    - selenium/standalone-chrome
+
+test:
   script:
     - npm install
+    - $env:HEADLESS='true' 
     - npm test
