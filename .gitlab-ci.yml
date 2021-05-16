@@ -7,6 +7,7 @@ run_test_chrome:
         - apt-get -y --with-new-pkgs upgrade
         - apt-get -y autoremove
         - apt-get -y install lsb-release libappindicator3-1
+        - apt-get -y install wget
         - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         - dpkg -i google-chrome-stable_current_amd64.deb || true
         - apt-get -fy install
