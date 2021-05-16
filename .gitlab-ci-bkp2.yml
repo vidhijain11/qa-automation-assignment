@@ -3,8 +3,8 @@ cache:
         - node_modules/
 
 run_test_firefox:
-    image: selenium/standalone-chrome:90.0
+    image: atools/firefox-headless:java11-node14-latest
     script:
-        - chrome --version
+        - firefox --version
         - npm install
         - npm run test

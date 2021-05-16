@@ -1,6 +1,3 @@
-
-import data from "../../testdata/dataSet"
-import orderFood from '../core/orderFood.core'
 import landing from "../../pages/landing.page"
 import allureReporter from "@wdio/allure-reporter"
 
