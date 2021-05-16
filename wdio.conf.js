@@ -24,7 +24,7 @@ if (headless == 'true') {
     chrome_browser_args = ['--headless', '--disable-extensions', '--allow-running-insecure-content', '--disable-dev-shm-usage', '--disable-gpu', '--no-sandbox', '--unlimited-storage', '--disable-notifications']
     firefox_browser_args = ['-headless', '-width 1280', '-height 800', '–window-size=1280,800']
 } else {
-    chrome_browser_args = ['--no-sandbox', '--unlimited-storage', 'disable-infobars']
+    chrome_browser_args = ['--no-sandbox', '--unlimited-storage', 'disable-infobars' , '--disable-dev-shm-usage']
     firefox_browser_args = []
 }
 
