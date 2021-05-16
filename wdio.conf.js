@@ -5,17 +5,17 @@ import allureReporter from '@wdio/allure-reporter'
 let runTimeCapabilities = null
 
 //Setting visual testing mode.
-let visualTesting = process.env.VISUALTESTING || "true"
+let visualTesting = process.env.VISUALTESTING || "false"
 
 //Setting environment based on user input
 let ENV = process.env.ENV || "Prod-Test1"
 
 // Setting browser arguments and maximum browser instance based on user input
-let runTimeBrowser = process.env.BROWSER || 'chrome'
+let runTimeBrowser = process.env.BROWSER || 'firefox'
 let maxBrowserInstance = parseInt(process.env.THREADS) || 1
 
 //Setting browser headless mode
-let headless = process.env.HEADLESS || 'false'
+let headless = process.env.HEADLESS || 'true'
 
 //Setting browser arguments based on mode of run
 let chrome_browser_args = {}

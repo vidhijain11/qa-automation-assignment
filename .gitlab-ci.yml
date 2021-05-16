@@ -1,22 +1,10 @@
-run_test_chrome:
-    image: ubuntu:18.04
+cache:
+    paths:
+        - node_modules/
+
+run_test_firefox:
+    image: atools/firefox-headless:java11-node14-latest
     script:
-        - apt-get -y upgrade 
-        - apt-get -y upgrade
-        - apt-get -y update
-        - apt-get -y --with-new-pkgs upgrade
-        - apt-get -y autoremove
-        - apt-get -y install lsb-release libappindicator3-1
-        - apt-get -y install wget
-        - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        - dpkg -i google-chrome-stable_current_amd64.deb || true
-        - apt-get -fy install
-        - apt-get -y install curl wget
-        - curl -sL https://deb.nodesource.com/setup_14.x | bash -
-        - apt-get -y install nodejs
-        - node --version
-        - npm --version
-        - npm i @sitespeed.io/chromedriver
-        - npm i selenium-webdriver
+        - firefox --version
         - npm install
         - npm run test
