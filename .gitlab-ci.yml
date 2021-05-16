@@ -1,5 +1,5 @@
 run_test_chrome:
-    image: selenium/node-chrome:90.0
+    image: selenium/node-firefox:88.0
     script:
         - curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
         - sudo apt-get install -y nodejs

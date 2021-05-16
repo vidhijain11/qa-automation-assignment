@@ -11,7 +11,7 @@ let visualTesting = process.env.VISUALTESTING || "true"
 let ENV = process.env.ENV || "Prod-Test1"
 
 // Setting browser arguments and maximum browser instance based on user input
-let runTimeBrowser = process.env.BROWSER || 'chrome'
+let runTimeBrowser = process.env.BROWSER || 'firefox'
 let maxBrowserInstance = parseInt(process.env.THREADS) || 1
 
 //Setting browser headless mode
