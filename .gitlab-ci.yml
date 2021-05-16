@@ -3,8 +3,7 @@ cache:
         - node_modules/
 
 run_test_firefox:
-    image: selenium/standalone-chrome:90.0
+    image: selenium/node-chrome:90.0
     script:
-        - chrome --version
         - npm install
         - npm run test
