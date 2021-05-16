@@ -1,10 +1,10 @@
-image: node:latest
+cache:
+    paths:
+        - node_modules/
 
-services:
-    - selenium/standalone-chrome
-
-test:
-  script:
-    - npm install
-    - HEADLESS='true' 
-    - npm test
+run_test_firefox:
+    image: atools/firefox-headless:java11-node14-latest
+    script:
+        - firefox --version
+        - npm install
+        - npm run test

@@ -1,0 +1,10 @@
+image: node:latest
+
+services:
+    - selenium/standalone-chrome
+
+test:
+  script:
+    - npm install
+    - HEADLESS='true' 
+    - npm test
