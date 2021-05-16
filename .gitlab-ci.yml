@@ -1,8 +1,4 @@
-cache:
-    paths:
-        - node_modules/
-
-run_test_firefox:
+run_test_chrome:
     image: selenium/node-chrome:90.0
     script:
         - npm install
