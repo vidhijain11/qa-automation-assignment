@@ -1,6 +1,6 @@
 run_test_chrome:
     image: selenium/node-chrome:90.0
     script:
-        - apt-get install -y npm
+        - sudo apt-get install -y npm
         - npm install
         - npm run test
