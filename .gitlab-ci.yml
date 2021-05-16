@@ -1,5 +1,19 @@
 run_test_chrome:
-    image: markhobson/node-chrome:latest
+    image: ubuntu:18.04
     script:
+        - sudo apt-get -y upgrade 
+        - sudo apt-get -y upgrade
+        - sudo apt-get -y update
+        - sudo apt-get -y --with-new-pkgs upgrade
+        - sudo apt-get -y autoremove
+        - sudo apt-get -y install lsb-release libappindicator3-1
+        - sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        - sudo dpkg -i google-chrome-stable_current_amd64.deb || true
+        - sudo apt-get -fy install
+        - sudo apt-get -y install curl wget
+        - sudo curl -sL https://deb.nodesource.com/setup_14.x | bash -
+        - sudo apt-get -y install nodejs
+        - sudo node --version
+        - sudo npm --version
         - npm install
         - npm run test
