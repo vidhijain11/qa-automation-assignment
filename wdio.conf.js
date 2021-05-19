@@ -5,17 +5,17 @@ import allureReporter from '@wdio/allure-reporter'
 let runTimeCapabilities = null
 
 //Setting visual testing mode.
-let visualTesting = process.env.VISUALTESTING || "true"
+let visualTesting = process.env.VISUALTESTING || "false"
 
 //Setting environment based on user input
 let ENV = process.env.ENV || "Prod-Test1"
 
 // Setting browser arguments and maximum browser instance based on user input
-let runTimeBrowser = process.env.BROWSER || 'chrome'
+let runTimeBrowser = process.env.BROWSER || 'firefox'
 let maxBrowserInstance = parseInt(process.env.THREADS) || 1
 
 //Setting browser headless mode
-let headless = process.env.HEADLESS || 'false'
+let headless = process.env.HEADLESS || 'true'
 
 //Setting browser arguments based on mode of run
 let chrome_browser_args = {}
@@ -24,7 +24,7 @@ if (headless == 'true') {
     chrome_browser_args = ['--headless', '--disable-extensions', '--allow-running-insecure-content', '--disable-dev-shm-usage', '--disable-gpu', '--no-sandbox', '--unlimited-storage', '--disable-notifications']
     firefox_browser_args = ['-headless', '-width 1280', '-height 800', '–window-size=1280,800']
 } else {
-    chrome_browser_args = ['--no-sandbox', '--unlimited-storage', 'disable-infobars']
+    chrome_browser_args = ['--no-sandbox', '--unlimited-storage', 'disable-infobars' , '--disable-dev-shm-usage']
     firefox_browser_args = []
 }
 
@@ -91,8 +91,20 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './test/specs/main/*.spec.js',
+        './test/specs/main/*orderFood*.spec.js',
     ],
+    //cli command - npx wdio wdio.conf.js --suite orderFood
+    suites : {
+        orderFood : [ 
+            './test/specs/main/01_orderFood_case1.spec.js',
+            './test/specs/main/02_orderFood_case2.spec.js',
+            './test/specs/main/03_orderFood_case3.spec.js',
+        ],
+
+        visualTest : [
+            './test/specs/main/04_landingPage_VisualTest.spec.js'
+        ]
+    },
     //
     // Patterns to exclude.
     exclude: [
@@ -205,15 +217,10 @@ exports.config = {
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
-        // Babel setup
-        require: ['@babel/register'],
-
         //Abort ("bail") after first test failure 
         bail: true,
-        ui: 'bdd',
-
-        //Specify test timeout threshold
-        timeout: 12000000
+        //Specify single test timeout threshold
+        timeout: 120000
     },
     //
     // =====
@@ -275,6 +282,13 @@ exports.config = {
      */
     // beforeSession: function (config, capabilities, specs) {
     // },
+     /**
+     * Gets executed before test execution begins. At this point you can access to all global
+     * variables like `browser`. It is the perfect place to define custom commands.
+     * @param {Array.<Object>} capabilities list of capabilities details
+     * @param {Array.<String>} specs        List of spec file paths that are to be run
+     * @param {Object}         browser      instance of created browser/device session
+     */
     before: function () {
         require('expect-webdriverio').setOptions({ trim: true })
         browser.setTimeout({
@@ -315,14 +329,9 @@ exports.config = {
                 }
                 else {
 
-                    //console.log("browser name is ", browser.capabilities.browserName)
-                    fsExtra.readFile(`./.tmp/diff/desktop_${browser.capabilities.browserName}/${name}-{1280}x{800}.png`, (err, data) => {
-                        if (err) throw err; // Fail if the file can't be read.
-                        let str = data.toString('base64')
-                        data = Buffer.from(str, 'base64');
-                        allureReporter.addStep(`Visual Test for Image - ${name} Failed`, [], 'failed')
-                        allureReporter.addAttachment("Difference Screenshot", data);
-                    });
+                    let data = fsExtra.readFileSync(`./.tmp/diff/desktop_${browser.capabilities.browserName}/${name}-{1280}x{800}.png`);
+                    allureReporter.addStep(`Visual Test for Image - ${name} Failed`, [], 'failed')
+                    allureReporter.addAttachment("Difference Screenshot", data);
                     return false
                 }
             } else {
@@ -331,13 +340,6 @@ exports.config = {
             }
         }, true)
     },
-    /**
-     * Gets executed before test execution begins. At this point you can access to all global
-     * variables like `browser`. It is the perfect place to define custom commands.
-     * @param {Array.<Object>} capabilities list of capabilities details
-     * @param {Array.<String>} specs        List of spec file paths that are to be run
-     * @param {Object}         browser      instance of created browser/device session
-     */
 
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -350,8 +352,8 @@ exports.config = {
      * Hook that gets executed before the suite starts
      * @param {Object} suite suite details
      */
-    // beforeSuite: function (suite) {
-    // },
+     // beforeSuite: function (suite) {
+     // },
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
@@ -378,7 +380,7 @@ exports.config = {
     afterTest: function (test, context, { error, result, duration, passed, retries }) {
         if (error) {
             browser.takeScreenshot();
-        }
+        } 
     },
     /**
      * Hook that gets executed after the suite has ended

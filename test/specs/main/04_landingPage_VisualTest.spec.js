@@ -1,6 +1,3 @@
-
-import data from "../../testdata/dataSet"
-import orderFood from '../core/orderFood.core'
 import landing from "../../pages/landing.page"
 import allureReporter from "@wdio/allure-reporter"
 
@@ -12,7 +9,7 @@ describe(`Scenario - Visual Test for Landing Page`, () => {
         landing.open()
     })
 
-    it(`Testing Landing Page UI`, () => {
+    it(`Visual Test - Testing Landing Page UI`, () => {
         allureReporter.addSeverity('normal')
         expect(landing.txtTitle).toBeDisplayed()
         expect(landing.imgTopBar.checkImage('imgTopBar')).toBeTruthy()
