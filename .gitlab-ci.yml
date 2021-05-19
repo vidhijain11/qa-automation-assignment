@@ -7,4 +7,5 @@ run_test_firefox:
     script:
         - firefox --version
         - npm install
+        - HEADLESS='true'
         - npm run test
