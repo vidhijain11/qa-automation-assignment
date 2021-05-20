@@ -45,8 +45,8 @@ class OrderFood {
         checkout.fillAddressForm(data.deliveryAddress[1], data.user[1])
         expect(checkout.getSelectedDeliveryTime()).toEqual(data.deliveryTime.defaultText)
 
-        allureReporter.addStep(`Validate first available delivery time is - ${checkout.getClosestDeliveryTime()} `)
-        expect(checkout.txtDeliveryTime(2)).toHaveText(checkout.getClosestDeliveryTime())
+        //allureReporter.addStep(`Validate first available delivery time is - ${checkout.getClosestDeliveryTime()} `)
+        //expect(checkout.txtDeliveryTime(2)).toHaveText(checkout.getClosestDeliveryTime())
 
         expect(checkout.getSelectedPaysWith()).toEqual(`Exact amount: ${dataOrderFood.cost.total}`)
 
